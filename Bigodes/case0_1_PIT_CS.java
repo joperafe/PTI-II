@@ -32,9 +32,9 @@ public class HashMapIterator {
 // TUDO PARA TRATAR A RECEÇÃO DE UM PACOTE DE INTERESSE
 while (reader.hasNextLine()) {
         String interesse = reader.nextLine();
-
         if (interesse.isEmpty()){
-        break;
+            // Caso ENTER
+            break;
         }
         // Caso exista o interesse na CS é reenviado
         if (contentstorage_test.containsKey(interesse)) {
@@ -68,6 +68,7 @@ while (reader.hasNextLine()) {
 while (reader.hasNextLine()) {
     String interesse = reader.nextLine();
     if (interesse.isEmpty()){
+        // Caso ENTER
         System.out.println("See you later alligator!");
         break;
         }else // Caso o interesse já exista na CS, pacote descartado
@@ -75,7 +76,7 @@ while (reader.hasNextLine()) {
                 System.out.println("Interesse já existente na CS");
                 }else // Caso exista interesse na PIT, pacote adicionado à CS e removido da PIT
                     if (pit_test.containsKey(interesse)){
-                      // Será o array[2]
+                      // Será o array[2], conteúdo dos dados
                       String dados = "Dados blablabla do interesse";
                       contentstorage_test.put(interesse, dados);
                       pit_test.remove(interesse);
