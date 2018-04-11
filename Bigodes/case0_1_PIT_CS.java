@@ -6,7 +6,7 @@ public class HashMapIterator {
         Map<String,String> contentstorage_test = new HashMap<String, String>();
         contentstorage_test.put("economia","dados aqui algures");
 
-        //De momento PIT
+        //----------- PIT -------------------
         //List<Map<String,List<String>>> list = new ArrayList<Map<String,List<String>>>();
         //list.add(pit_test);
         Map<String, List<String>> pit_test = new HashMap<String, List<String>>();
@@ -14,7 +14,7 @@ public class HashMapIterator {
         List<String> arraylist2 = new ArrayList<String>();
         List<String> arraylist3 = new ArrayList<String>();
 
-        //------Adicionar Notícias,(lista dos values)------
+        //------Adicionar Notícias na PIT,(lista dos values)------
         //De momento a guardar ips de onde vêm pedidos
         arraylist1.add("2001::22:1::1/126");
         arraylist1.add("2001:0690:2280:820::2A/126");
@@ -27,6 +27,24 @@ public class HashMapIterator {
         pit_test.put("desporto", arraylist1);
         pit_test.put("cultura", arraylist2);
         pit_test.put("mundo", arraylist3);
+        
+        // Prints tabelas
+        System.out.println("********************************************************");
+        //---------Print PIT notícias--------
+        System.out.println("------PIT------");
+        for (Map.Entry<String, List<String>> entry : pit_test.entrySet()) {
+            System.out.println("Tema: " + entry.getKey() + "\t\tIPs: " + entry.getValue());
+        }
+        System.out.println("------CS------");
+        for (Map.Entry<String, String> entry_cs : contentstorage_test.entrySet()) {
+            System.out.println("Tema: " + entry_cs.getKey() + "\t\tIPs: " + entry_cs.getValue());
+        }
+        
+        // Scan input para testes
+        System.out.println("********************************************************");
+        Scanner reader = new Scanner(System.in);
+        System.out.println("Pacote de dados recebido: ");
+        //System.out.println("Interesse: ");
 
 // AQUI ESTÁ O CASO PACOTE DE INTERESSE "0"
 // TUDO PARA TRATAR A RECEÇÃO DE UM PACOTE DE INTERESSE
@@ -85,4 +103,15 @@ while (reader.hasNextLine()) {
                             System.out.println("Interesse não consta na CS nem na PIT");
                             }
             }
+        System.out.println("********************************************************");
     }
+
+// ----- RECEÇÃO DE PACOTES DE DADOS ------
+//verifica a existência da entrada na CS
+//sim
+    //descarta pacote
+//senão se existe interesse na PIT
+    //adiciona à CS
+    //remove interesse da PIT
+//caso não exista nem na PIT nem na CS
+    
