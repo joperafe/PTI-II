@@ -6,7 +6,7 @@ public class HashMapIterator {
         Map<String,String> contentstorage_test = new HashMap<String, String>();
         contentstorage_test.put("economia","dados aqui algures");
 
-        //De momento PIT (?)
+        //De momento PIT
         //List<Map<String,List<String>>> list = new ArrayList<Map<String,List<String>>>();
         //list.add(pit_test);
         Map<String, List<String>> pit_test = new HashMap<String, List<String>>();
@@ -28,9 +28,8 @@ public class HashMapIterator {
         pit_test.put("cultura", arraylist2);
         pit_test.put("mundo", arraylist3);
 
-
-
 // AQUI ESTÁ O CASO PACOTE DE INTERESSE "0"
+// TUDO PARA TRATAR A RECEÇÃO DE UM PACOTE DE INTERESSE
 while (reader.hasNextLine()) {
         String interesse = reader.nextLine();
 
@@ -62,11 +61,10 @@ while (reader.hasNextLine()) {
         }
         }
         System.out.println("********************************************************");
-        }
-
+    }
 
 // AQUI ESTÁ O CASO PACOTE DE DADOS "1"
-// TUDO PARA TRATAR A RECEÇÃO DE UM PACOTE DE INTERESSE
+// TUDO PARA TRATAR A RECEÇÃO DE UM PACOTE DE DADOS
 while (reader.hasNextLine()) {
     String interesse = reader.nextLine();
     if (interesse.isEmpty()){
@@ -85,4 +83,5 @@ while (reader.hasNextLine()) {
                         }else {
                             System.out.println("Interesse não consta na CS nem na PIT");
                             }
-                            }
+            }
+    }
