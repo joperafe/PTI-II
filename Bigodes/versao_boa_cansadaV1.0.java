@@ -134,12 +134,13 @@ public class United {
                                 // Envio direto da trama para os "clientes" da PIT
                                 //DatagramPacket direto = new DatagramPacket(b,b.length, InetAddress.getByName(ip), 9989); //creating packet
                                 //skt.send(direto);
-                                System.out.println("Daqui foi o pacote na via-rápida para " + address );
+                                //System.out.println("Daqui foi o pacote na via-rápida para " + address );
                                 // Adicionar na FIB
-                                fib_test.put(novo2, new ArrayList<>());
-                                fib_test.get(novo2).add(address);
+                                
+                                // VER ESTA CONFUSÃO!!
+                                //fib_test.put(novo2, address);
                                 System.out.println("Interesse " + novo2 + " introduzido na FIB com interface: " + address);
-                                pit_test.remove(novo2,address);
+                                //pit_test.remove(novo2,address);
                             }
                             //pit_test.remove(novo2);
                             //System.out.println("Interesse removido da PIT");
