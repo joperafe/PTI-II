@@ -109,40 +109,41 @@ public class United {
                     if (novo2.isEmpty()){
                         System.out.println("See you later alligator!");
                         break;
-                    }else // Caso o interesse já exista na PIT, pacote descartado
+                    }else // Caso exista interesse na PIT, pacote adicionado à CS, removido da PIT e adicionado à FIB
                         if (pit_test.containsKey(novo2)){
-                            // Será o array[2]
                             // Dados bluff
                             String dados = "Dados blablabla do interesse";
 
+                            // GUARDAR NA CS
                             // TENTATIVA FIFO
-                            for (int i = 0; contentstorage_test.size() < entr; i++){
+                            /*for (int i = 0; contentstorage_test.size() < entr; i++){
                                 contentstorage_test.put(novo2, dados);
                                 System.out.println();
-                            }
-                            
-                            pit_test.remove(novo2);
+                            }*/
+
                             // SEND DATA TO FIB
                             // SEND DATA for each PIT'S ADDRESS
-                            Iterator it = pit_test.entrySet().iterator();
-                            while (it.hasNext()){
-                                Map.Entry pair = (Map.Entry)it.next();
-                                System.out.println(pair.getValue());
-                                // send to pair.getValue();
-                                String ip = (String) pair.getValue();
+                            for (String address : pit_test.get(novo2)) {
+                                // send to values
+                                System.out.println("Endereço " + address);
                                 String aux = " ";
-                                String msg = "1 " + novo2 + ip + aux;// + ttl;// + aux + flag;
+                                // Tipo de pacote "1" que se traduz em pacote de dados
+                                String msg = "1 " + novo2 + address ;//+ aux + ttl;// + aux + flag;
                                 System.out.println("msg: " + msg);
                                 byte [] b = msg.getBytes();
-                                //System.out.println("ip: " + host);
                                 // Envio direto da trama para os "clientes" da PIT
-                                DatagramPacket direto = new DatagramPacket(b,b.length, InetAddress.getByName(ip), 9989); //creating packet
+                                //DatagramPacket direto = new DatagramPacket(b,b.length, InetAddress.getByName(ip), 9989); //creating packet
                                 //skt.send(direto);
-                                System.out.println("Daqui foi o pacote na via-rápida");
-                                it.remove(); // avoids a ConcurrentModificationException
+                                //System.out.println("Daqui foi o pacote na via-rápida para " + address );
+                                // Adicionar na FIB
+                                fib_test.put(novo2, new ArrayList<>());
+                                fib_test.get(novo2).add(address);
+                                System.out.println("Interesse introduzido na FIB");
                             }
+                            pit_test.remove(novo2);
+                            System.out.println("Interesse removido da PIT");
                             System.out.println("Só para avisar que o interesse foi removido da PIT...");
-                        }else // Caso exista interesse na PIT, pacote adicionado à CS e removido da PIT
+                        }else
                             if (contentstorage_test.containsKey(novo2)){
                                     System.out.println("Interesse já existente na CS");
                             }else {
@@ -159,6 +160,10 @@ public class United {
             System.out.println("------CS------");
             for (Map.Entry<String, String> entry_cs : contentstorage_test.entrySet()) {
                 System.out.println("Interesse: " + entry_cs.getKey() + "\tIP: " + entry_cs.getValue());
+            }
+            System.out.println("------FIB------");
+            for (Map.Entry<String, List<String>> entry : fib_test.entrySet()) {
+                System.out.println("Interesse: " + entry.getKey() + "\tIP: " + entry.getValue());
             }
             System.out.println("########################################################");
             System.out.println("Tipos de pacotes:\n interesse \t- 0 -\n dados \t- 1 - ");
