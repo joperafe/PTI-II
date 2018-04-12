@@ -128,20 +128,21 @@ public class United {
                                 System.out.println("Endereço " + address);
                                 String aux = " ";
                                 // Tipo de pacote "1" que se traduz em pacote de dados
-                                String msg = "1 " + novo2 + address ;//+ aux + ttl;// + aux + flag;
-                                System.out.println("msg: " + msg);
+                                String msg = "1 " + novo2 + aux + address ;//+ aux + ttl;// + aux + flag;
+                                //System.out.println("msg: " + msg);
                                 byte [] b = msg.getBytes();
                                 // Envio direto da trama para os "clientes" da PIT
                                 //DatagramPacket direto = new DatagramPacket(b,b.length, InetAddress.getByName(ip), 9989); //creating packet
                                 //skt.send(direto);
-                                //System.out.println("Daqui foi o pacote na via-rápida para " + address );
+                                System.out.println("Daqui foi o pacote na via-rápida para " + address );
                                 // Adicionar na FIB
                                 fib_test.put(novo2, new ArrayList<>());
                                 fib_test.get(novo2).add(address);
-                                System.out.println("Interesse introduzido na FIB");
+                                System.out.println("Interesse " + novo2 + " introduzido na FIB com interface: " + address);
+                                pit_test.remove(novo2,address);
                             }
-                            pit_test.remove(novo2);
-                            System.out.println("Interesse removido da PIT");
+                            //pit_test.remove(novo2);
+                            //System.out.println("Interesse removido da PIT");
                             System.out.println("Só para avisar que o interesse foi removido da PIT...");
                         }else
                             if (contentstorage_test.containsKey(novo2)){
