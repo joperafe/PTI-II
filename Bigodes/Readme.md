@@ -1,7 +1,5 @@
-No ficheiro versao_case_V0.0.java falta implementar as políticas de controlo de memória/performance.
-Entenda-se por política de performance:
-  - uma função que compare TTLs e descarte pacotes fora de prazo ou iguais;
-  - content store com o fifo, para estabelecer um certo limite de dados;
-  - pacotes de interesse duplicados são descartados, caso ttl seja igual.
-  
-  
+No ficheiro hostV1.0.java falta implementar as políticas de gestão de recursos.
+Entenda-se por gestão de recursos:
+  - uma função que compare TTLs e descarte pacotes fora de prazo ou iguais
+    - PIT;
+    - CS.
