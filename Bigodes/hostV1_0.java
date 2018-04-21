@@ -1,4 +1,12 @@
 package hashmap;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -6,11 +14,67 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 
+
+
+
 public class United {
-    // Capacidade do FIFO
-    private static final int MAX_ENTRIES = 2;
+
+    //-------FIFO e TTL--------
+    static final class vars {
+
+        private final int fifo;
+        private final int ttl;
+
+        private vars(int fifo, int ttl) {
+            this.fifo = fifo;
+            this.ttl = ttl;
+        }
+
+        private int getFifo() {
+            return fifo;
+        }
+
+        public int getTTL() {
+            return ttl;
+
+        }
+    }
+
+    private static vars configfiles(){
+        int fifo = 0;
+        int ttl = 0;
+        try {
+
+            File fXmlFile = new File("C:/Users/Asus/Desktop/XML/configfile.xml");
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(fXmlFile);
+            //optional, but recommended
+            //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
+            doc.getDocumentElement().normalize();
+            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+            NodeList nList = doc.getElementsByTagName("lista");
+            for (int temp = 0; temp < nList.getLength(); temp++) {
+                Node nNode = nList.item(temp);
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                    Element eElement = (Element) nNode;
+                    fifo = Integer.parseInt(eElement.getElementsByTagName("fifo").item(0).getTextContent());
+                    ttl = Integer.parseInt(eElement.getElementsByTagName("ttl").item(0).getTextContent());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new vars(fifo, ttl);
+    }
+
     public static void main(String[] args) throws UnknownHostException {
+        vars variables = configfiles();
+        //System.out.println("Aqui está o tamanho do fifo :" + variables.getFifo());
+        //System.out.println("Aqui está o tamanho do ttl :" + variables.getTTL());
         //-----------Construção da Content Store FIFO com MAX_ENTRIES entradas-------------
+        int MAX_ENTRIES = variables.getFifo();
         LinkedHashMap<String,String> contentstore_test = new LinkedHashMap<>(MAX_ENTRIES, 0.75F, true){
             protected boolean removeEldestEntry(Map.Entry eldest){
             return size() > MAX_ENTRIES;
@@ -28,12 +92,10 @@ public class United {
         List<String> arraylist2 = new ArrayList<>();
         List<String> arraylist3 = new ArrayList<>();
         // FAKE NEWS
-        // Adicionar TTL ao mapa
-
         //------IPs falsos para testes-----
         arraylist1.add("2001::22:1::1/126");
         arraylist1.add("2001:0690:2280:820::2A/126");
-        arraylist1.add("2001:0690:2280:820::2A/126");
+        arraylist1.add("2001:0690:2180:820::2/126");
         arraylist2.add("121:90:20:820::2A/128");
         arraylist3.add("211:90:20::2A/128");
         //------Adicionar interesses(key) PIT------
@@ -52,6 +114,7 @@ public class United {
         for (Map.Entry<String, String> entry_cs : contentstore_test.entrySet()) {
             System.out.println("Tema: " + entry_cs.getKey() + "\t\tIPs: " + entry_cs.getValue());
         }
+        System.out.println("OIOAIOQIODIEQODIEOIDOEIO " + contentstore_test.get("cultura"));
         //---------Print PIT--------
         System.out.println("------PIT------");
         for (Map.Entry<String, List<String>> entry : pit_test.entrySet()) {
@@ -91,14 +154,14 @@ public class United {
                     } else
                         // Caso exista o interesse na PIT é adicionado o endereço IP do host que faz o request
                         if (pit_test.containsKey(novo)) {
+                            // Endereço já existente na PIT
                             if(pit_test.containsValue(novo)){
                                 Timestamp ttl;
                                 //if (ttl.equals())
                                 // Ao fim de x segundos o interesse é limpo da PIT, função que verifica TTLs
                                 System.out.println("Interesse duplicado! Not much to do, for now...");
                                 break;
-                            }else {
-                                // get do ip proveniente
+                            }else { // Adiciona endereço na PIT
                                 //pit_test.get(novo).add(String.valueOf(request));
                                 String endereco = "100:100:111";
                                 pit_test.get(novo).add(endereco);
@@ -107,7 +170,7 @@ public class United {
                         } else
                             // Existe na FIB!
                             if (fib_test.containsKey(novo)) {
-                            // Não existindo, cria novo interesse na PIT e envia o PRIMEIRO pedido para a rede(Boolean, Case True or False! True by defaultel)
+                            // Não existindo, cria novo interesse na PIT e envia o PRIMEIRO pedido para a rede(Boolean, Case True or False! True by default)
                             pit_test.put(novo, new ArrayList<>());
                             pit_test.get(novo).add("100:100:111");
                             String aux = " ";
@@ -197,9 +260,4 @@ public class United {
             System.out.println("Tipos de pacotes:\n interesse \t- 0 -\n dados \t- 1 - ");
         }
     }
-/*
-    public gere_ttl(Timestamp ttl){
-            
-    }*/
 }
-
