@@ -1,9 +1,9 @@
 package hashmap;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
@@ -14,50 +14,37 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 
-
-
-
 public class United {
-
     //-------FIFO e TTL--------
     static final class vars {
-
         private final int fifo;
         private final int ttl;
-
         private vars(int fifo, int ttl) {
             this.fifo = fifo;
             this.ttl = ttl;
         }
-
         private int getFifo() {
             return fifo;
         }
-
         public int getTTL() {
             return ttl;
-
         }
     }
-
+    //------Valores do fifo e do ttl do ficheiro de configuração-------
     private static vars configfiles(){
         int fifo = 0;
         int ttl = 0;
         try {
-
             File fXmlFile = new File("C:/Users/Asus/Desktop/XML/configfile.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(fXmlFile);
-            //optional, but recommended
-            //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
             doc.getDocumentElement().normalize();
             System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
             NodeList nList = doc.getElementsByTagName("lista");
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nNode = nList.item(temp);
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-
                     Element eElement = (Element) nNode;
                     fifo = Integer.parseInt(eElement.getElementsByTagName("fifo").item(0).getTextContent());
                     ttl = Integer.parseInt(eElement.getElementsByTagName("ttl").item(0).getTextContent());
@@ -68,7 +55,7 @@ public class United {
         }
         return new vars(fifo, ttl);
     }
-
+    //
     public static void main(String[] args) throws UnknownHostException {
         vars variables = configfiles();
         //System.out.println("Aqui está o tamanho do fifo :" + variables.getFifo());
