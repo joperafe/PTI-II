@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<lista>
+		<fifo>5</fifo>
+		<ttl>600000</ttl>
+</lista>
