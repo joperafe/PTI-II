@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<lista>
+	<tema id="desporto">
+		<conteudo>yong foi o primeiro a chegar à meta</conteudo>
+	</tema>
+	<tema id="cultura">
+		<conteudo>Tarantino supreende fãs com gravidez indesejada!</conteudo>
+	</tema>
+	<tema id="portugal">
+		<conteudo>Incêndios em pleno outono fazem parte de um plano bem estruturado da escória portuguesa.</conteudo>
+	</tema>
+	<tema id="mundo">
+		<conteudo>Será que Putin e Kim Jong Un conseguem parar de medir tamanhos?</conteudo>
+	</tema>
+</lista>
