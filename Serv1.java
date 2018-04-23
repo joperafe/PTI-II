@@ -155,10 +155,40 @@ public class Serv1 {
 
    public static void main(String[] args) throws Exception 
    {
-      vars variables = configfiles();
-      int fifo = variables.getFifo();
-      int ttl = variables.getTTL();
+       vars variables = configfiles();
+       int fifo = variables.getFifo();
+       int ttl = variables.getTTL();
+       //Ler noticia do XML
       LinkedHashMap<String,String> cs = new LinkedHashMap<String,String>(fifo, (float) 0.75, true);
+        try {
+
+            File fXmlFile = new File("C:/Users/Asus/Desktop/XML/lista.xml");
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(fXmlFile);
+
+            doc.getDocumentElement().normalize();
+
+            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+
+            NodeList nList = doc.getElementsByTagName("tema");
+
+            System.out.println("----------------------------");
+
+            for (int temp = 0; temp < nList.getLength(); temp++) {
+
+                Node nNode = nList.item(temp);
+
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+
+                    Element eElement = (Element) nNode;
+                    cs.put(eElement.getAttribute("id"),eElement.getElementsByTagName("conteudo").item(0).getTextContent());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+      }
+       
       //InetAddress group = InetAddress.getByName("FF15::1:2:3");
       InetAddress group = InetAddress.getByName("FF02::1");
       
