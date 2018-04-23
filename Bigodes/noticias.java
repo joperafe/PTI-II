@@ -94,7 +94,7 @@ public class xml {
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
                     Element eElement = (Element) nNode;
-
+                    mapa.put(eElement.getAttribute("id"),eElement.getElementsByTagName("conteudo").item(0).getTextContent());
                     System.out.println("Tema: " + eElement.getAttribute("id"));
                     System.out.println("Conteudo: " + eElement.getElementsByTagName("conteudo").item(0).getTextContent());
                     System.out.println("\n");
