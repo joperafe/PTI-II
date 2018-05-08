@@ -10,11 +10,11 @@ public class TematicoDesporto
 		try
 		{
 			String pedidoDesporto = "Desporto";
-			String serv1 = "2001:0690:2280:0822::1";
-			String serv2 = "2001:0690:2280:0822::42";
+			String serv1 = "2001:0690:2280:0821::6";
+			String serv2 = "2001:0690:2280:0821::7";
 			int k=2;
 			int timeout=300;
-
+			
 			do
 			{
 				if(InetAddress.getByName(serv1).isReachable(timeout))
@@ -29,7 +29,7 @@ public class TematicoDesporto
 			
 			if(k==0)
 			{
-				Socket socket1 = new Socket("2001:0690:2280:0822::1", 4444);
+				Socket socket1 = new Socket("2001:0690:2280:0821::6", 4444);
 				InputStreamReader ir1 = new InputStreamReader(socket1.getInputStream());
 				PrintStream ps1 = new PrintStream(socket1.getOutputStream());
 				BufferedReader br1 = new BufferedReader(ir1);
@@ -46,7 +46,7 @@ public class TematicoDesporto
 			}
 			if(k==1)
 			{
-				Socket socket2 = new Socket("2001:0690:2280:0822::42", 4444);
+				Socket socket2 = new Socket("2001:0690:2280:0821::7", 3333);
 				InputStreamReader ir2 = new InputStreamReader(socket2.getInputStream());
 				PrintStream ps2 = new PrintStream(socket2.getOutputStream());
 				BufferedReader br2 = new BufferedReader(ir2);

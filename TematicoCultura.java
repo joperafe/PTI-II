@@ -9,27 +9,33 @@ public class TematicoCultura
 	{
 		try
 		{
-			String serv1 = "2001:0690:2280:0822::1";
-			String serv2 = "2001:0690:2280:0822::42";
+			//n1
+			String serv1 = "2001:0690:2280:0822:200:ff:feaa:2";
+			//n2
+			String serv2 = "2001:0690:2280:0822:200:ff:feaa:0";
 			String pedidoCultura = "Cultura";
 			int k=2;
 			int timeout=300;
 
 			do
 			{
-				if(InetAddress.getByName(serv1).isReachable(timeout))
+				try
 				{
-					k=0;
-				}
-				else if(InetAddress.getByName(serv2).isReachable(timeout))
-				{
-					k=1;
-				}
+					if(InetAddress.getByName(serv1).isReachable(timeout))
+					{
+						k=0;
+					}
+					else if(InetAddress.getByName(serv2).isReachable(timeout))
+					{
+						k=1;
+					}
+				}catch (UnknownHostException e){}
 			}while(k==2);
 			
 			if(k==0)
 			{
-				Socket socket1 = new Socket("2001:0690:2280:0822::1", 4444);
+				//n1
+				Socket socket1 = new Socket("2001:0690:2280:0822:200:ff:feaa:2", 3333);
 				InputStreamReader ir1 = new InputStreamReader(socket1.getInputStream());
 				PrintStream ps1 = new PrintStream(socket1.getOutputStream());
 				BufferedReader br1 = new BufferedReader(ir1);
@@ -46,7 +52,8 @@ public class TematicoCultura
 			}
 			if(k==1)
 			{
-				Socket socket2 = new Socket("2001:0690:2280:0822::42", 4444);
+				//n2
+				Socket socket2 = new Socket("2001:0690:2280:0822:200:ff:feaa:0", 4444);
 				InputStreamReader ir2 = new InputStreamReader(socket2.getInputStream());
 				PrintStream ps2 = new PrintStream(socket2.getOutputStream());
 				BufferedReader br2 = new BufferedReader(ir2);
