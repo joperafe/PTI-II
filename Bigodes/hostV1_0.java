@@ -166,6 +166,7 @@ public class United {
                             System.out.println("msg: " + msg);
                             byte[] b = msg.getBytes();
                             // Envia a trama construída para o endereço existente na FIB
+                                // BROADCAST AQUI!
                             //DatagramPacket reinteresse = new DatagramPacket(b,b.length, (InetAddress) fib_test.get(novo), 9989); //creating packet
                             //skt.send(reinteresse);
                             // Faltava enviar o interesse ao que existia na fib...
