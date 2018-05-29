@@ -42,7 +42,7 @@ public class movel {
         arraylist1.add("2001:0690:2280:820::2A/126");
         arraylist1.add("2001:0690:2180:820::2/126");
         arraylist2.add("121:90:20:820::2A/128");
-        arraylist3.add("211:90:20::2A/128");
+        arraylist3.add("123");
         //------Adicionar interesses(key) PIT------
         pitX.put("Desporto", arraylist1);
         pitX.put("Cultura", arraylist2);
@@ -212,17 +212,6 @@ public class movel {
         }
     }
 
-    /** returns the minimum of two numbers */
-    public static int minFunction(int n1, int n2) {
-        int min;
-        if (n1 > n2)
-            min = n2;
-        else
-            min = n1;
-
-        return min;
-    }
-
     private static String tema = "pais";
     //----------- TRATA DEAD CERTIFICATES --------------
     public static Map<String, List<String>> deadcertificate(String nome, String ip, Map<String, List<String>> x){//, String id, long ttl){
@@ -234,16 +223,20 @@ public class movel {
         }
         // Real deal
         if(x.containsKey(nome)) {
-            for (Map.Entry<String, List<String>> entry : x.entrySet()) 
+            for (Map.Entry<String, List<String>> entry : x.entrySet())
             {
                 List<String> arrayx = entry.getValue();
                 // Caso só exista 1 ip no interesse elimina interesse, caso contrário o interesse continua na tabela mas sem ips
-                if (arrayx.size()==1){
+                if (arrayx.size()==1 && arrayx.contains(ip)){
                     System.out.println("Como só possui 1 endereço IP apaga interesse");
+                    // Remove interesse da PIT
                     x.remove(nome);
-                }
-                // Percorre arrays
+                    // Return necessário para saltar fora do for, caso contrário erro
+                    return x;
+                }else
+                // Verifica existência do ip na lista de ips
                 if (arrayx.contains(ip)) {
+                    // Remove ip
                     arrayx.remove(ip);
                     System.out.println("Array x contém IP " + ip + " e foi removido");
                 } else {
