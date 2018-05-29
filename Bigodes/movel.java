@@ -14,13 +14,9 @@ public class movel {
 
     private static String ip = "1";
     public static void main(String[] args) {
-        int a = 11;
-        int b = 6;
-        int c = minFunction(a, b);
-        System.out.println("Minimum Value = " + c);
 
         //-----------Construção da Content Store FIFO com MAX_ENTRIES entradas-------------
-        int MAX_ENTRIES = 5;
+        int MAX_ENTRIES = 50;
         LinkedHashMap<String,String> csX =
                 new LinkedHashMap<>(MAX_ENTRIES, 0.75F, true){
                     protected boolean removeEldestEntry(Map.Entry eldest){
@@ -84,15 +80,27 @@ public class movel {
         }
 
         System.out.println("********************************************************");
+        System.out.println("------X------");
         //---------Print CS---------
         System.out.println("------CS------");
         for (Map.Entry<String, String> entry_cs : csX.entrySet()) {
-            System.out.println("Tema: " + entry_cs.getKey() + "\t\tIPs: " + entry_cs.getValue());
+            System.out.println("Tema: " + entry_cs.getKey() + "\t\tConteudo: " + entry_cs.getValue());
         }
         //---------Print PIT--------
         System.out.println("------PIT------");
         for (Map.Entry<String, List<String>> entry : pitX.entrySet()) {
-            System.out.println("Tema: " + entry.getKey() + "\t\tConteudo: " + entry.getValue());
+            System.out.println("Tema: " + entry.getKey() + "\t\tIP: " + entry.getValue());
+        }
+        System.out.println("------Y------");
+        //---------Print CS---------
+        System.out.println("------CS------");
+        for (Map.Entry<String, String> entry_cs : csY.entrySet()) {
+            System.out.println("Tema: " + entry_cs.getKey() + "\t\tConteudo: " + entry_cs.getValue());
+        }
+        //---------Print PIT--------
+        System.out.println("------PIT------");
+        for (Map.Entry<String, List<String>> entry : pitY.entrySet()) {
+            System.out.println("Tema: " + entry.getKey() + "\t\tIP: " + entry.getValue());
         }
         System.out.println("********************************************************");
         Scanner reader = new Scanner(System.in);
@@ -110,11 +118,10 @@ public class movel {
                     System.out.println("Introduzir ip do pacote de interesse a ser eliminado: ");
                     Scanner reader2 = new Scanner(System.in);
                     String dead1 = reader1.nextLine();
-                    deadcertificate(dead, dead1, pitX);
-                    System.out.println(deadcertificate(dead, dead1, pitX));
-                    // Falta guardar "nova" pit
+                    // Guarda nova pit
+                    pitX = deadcertificate(dead, dead1, pitX);
                     System.out.println("Dead certificate tratado!");
-                    System.out.println("********************************************************");
+                    System.out.println("-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_");
                     break;
                 case "1":
                     // Recebeu pacote Hello
@@ -135,7 +142,12 @@ public class movel {
                         System.out.println("Tema: " + entry_cs.getKey() + "\t\tIPs: " + entry_cs.getValue());
                     }
                     pitX = comparePIT(pitX,pitY);
-                    System.out.println("********************************************************");
+                    // Imprime conteúdo da CS do nó
+                    System.out.println("------PIT x------");
+                    for (Map.Entry<String, List<String>> entry_cs : pitX.entrySet()) {
+                        System.out.println("Tema: " + entry_cs.getKey() + "\t\tIPs: " + entry_cs.getValue());
+                    }
+                    System.out.println("-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_");
                     break;
                 case "3":
                     // Testes
@@ -166,18 +178,35 @@ public class movel {
                         pitX.put(nomehar, testes);
                         System.out.println("Nome " + nomehar + " e ip " + iphar + " adicionados");
                         //System.out.println("Enviar PIT e CS");
-                        System.out.println("********************************************************");
+                        System.out.println("-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_");
                         break;
                     }
             }
-            /*System.out.println("------CS------");
-            for (Map.Entry<String, String> entry_cs : contentstore_test.entrySet()) {
-                System.out.println("Interesse: " + entry_cs.getKey() + "\tConteudo: " + entry_cs.getValue());
+            System.out.println("********************************************************");
+            System.out.println("------X------");
+            //---------Print CS---------
+            System.out.println("------CS------");
+            for (Map.Entry<String, String> entry_cs : csX.entrySet()) {
+                System.out.println("Tema: " + entry_cs.getKey() + "\t\tConteudo: " + entry_cs.getValue());
             }
+            //---------Print PIT--------
             System.out.println("------PIT------");
-            for (Map.Entry<String, List<String>> entry : pit_test.entrySet()) {
-                System.out.println("Interesse: " + entry.getKey() + "\tIP: " + entry.getValue());
+            for (Map.Entry<String, List<String>> entry : pitX.entrySet()) {
+                System.out.println("Tema: " + entry.getKey() + "\t\tIP: " + entry.getValue());
             }
+            System.out.println("------Y------");
+            //---------Print CS---------
+            System.out.println("------CS------");
+            for (Map.Entry<String, String> entry_cs : csY.entrySet()) {
+                System.out.println("Tema: " + entry_cs.getKey() + "\t\tConteudo: " + entry_cs.getValue());
+            }
+            //---------Print PIT--------
+            System.out.println("------PIT------");
+            for (Map.Entry<String, List<String>> entry : pitY.entrySet()) {
+                System.out.println("Tema: " + entry.getKey() + "\t\tIP: " + entry.getValue());
+            }
+            System.out.println("********************************************************");
+            /*
             System.out.println("\n########################################################\n");
             System.out.println("Tipos de pacotes:\n dead \t- 0 -\n hello \t- 1 -\n content \t- 2 - ");*/
         }
@@ -196,29 +225,31 @@ public class movel {
 
     private static String tema = "pais";
     //----------- TRATA DEAD CERTIFICATES --------------
-    public static Map<String, List<String>> deadcertificate(String nome, String id, Map<String, List<String>> x){//, String id, long ttl){
+    public static Map<String, List<String>> deadcertificate(String nome, String ip, Map<String, List<String>> x){//, String id, long ttl){
         System.out.println("Em análise...");
         System.out.println("------PIT------");
+        // Só faz print da tabela
         for (Map.Entry<String, List<String>> entry : x.entrySet()) {
             System.out.println("Interesse: " + entry.getKey() + "\tIP: " + entry.getValue());
         }
-        //
-        System.out.println(x.get(nome));
-        if (x.containsKey(nome)){
-            System.out.println(" existe nome ");
-        }else {
-            System.out.println("Do nothing");
-        }
-        List<String> testes = new ArrayList<>();
-        testes = x.get(nome);
-        if (testes.contains(id)){
-            //pit_test.remove(nomehar);
-            testes.remove(id);
-            x.put(nome, testes);
-            System.out.println(x.get(nome));
-            System.out.println("IP retirado");
-        }else {
-            System.out.println("Do nothing");
+        // Real deal
+        if(x.containsKey(nome)) {
+            for (Map.Entry<String, List<String>> entry : x.entrySet()) 
+            {
+                List<String> arrayx = entry.getValue();
+                // Caso só exista 1 ip no interesse elimina interesse, caso contrário o interesse continua na tabela mas sem ips
+                if (arrayx.size()==1){
+                    System.out.println("Como só possui 1 endereço IP apaga interesse");
+                    x.remove(nome);
+                }
+                // Percorre arrays
+                if (arrayx.contains(ip)) {
+                    arrayx.remove(ip);
+                    System.out.println("Array x contém IP " + ip + " e foi removido");
+                } else {
+                    System.out.println("Do nothing");
+                }
+            }
         }
         System.out.println("********************************************************");
         //
@@ -229,7 +260,7 @@ public class movel {
     }
     // Compare CS
     public static LinkedHashMap<String, String> compareCS(LinkedHashMap<String,String> x, Map<String,String> y){//, Map<String, List<String>> y){
-        System.out.println("Estou a analizar a CS/PIT");
+        System.out.println("Estou a analizar a CS");
         // Comparar cs
         System.out.println("Comparar CS");
         for (Map.Entry<String, String> entry : y.entrySet())
@@ -247,7 +278,7 @@ public class movel {
     }
     // Compare PIT
     public static Map<String, List<String>> comparePIT(Map<String,List<String>> x, Map<String,List<String>> y){//, Map<String, List<String>> y){
-        System.out.println("Estou a analizar a CS/PIT");
+        System.out.println("Estou a analizar a PIT");
         // Comparar pit
         System.out.println("Comparar PIT");
         for (Map.Entry<String, List<String>> entry : y.entrySet())
