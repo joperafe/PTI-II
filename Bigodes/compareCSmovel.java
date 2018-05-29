@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public class compareCS {
+public class compareCSmovel {
     public static void main(String[] args) {
         // Tabelas CS x e y
         Map<String, String> x = new HashMap<>();
