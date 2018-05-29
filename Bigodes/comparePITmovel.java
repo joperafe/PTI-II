@@ -2,7 +2,7 @@ package movel;
 
 import java.util.*;
 
-public class comparePIT {
+public class comparePITmovel {
     public static void main(String[] args) {
         // Tabelas CS x e y
         Map<String, List<String>> x = new HashMap<>();
