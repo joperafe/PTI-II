@@ -12,7 +12,7 @@ import java.util.*;
 
 public class movel {
 
-    private static String ip = "1";
+    private static String id = "1";
     public static void main(String[] args) {
 
         //-----------Construção da Content Store FIFO com MAX_ENTRIES entradas-------------
@@ -134,7 +134,7 @@ public class movel {
                     // y são as tabelas recebidas
                     // compareCS(cs do nó, cs recebida)
                     // csX recebe o valor de x retornado pela função compareCS
-                    csX = compareCS(csX,csY);
+                    csX = compareCS(csX,csY,pitX);
                     System.out.println("PIT e CS analizadas");
                     // Imprime conteúdo da CS do nó
                     System.out.println("------CS x------");
@@ -214,7 +214,7 @@ public class movel {
 
     private static String tema = "pais";
     //----------- TRATA DEAD CERTIFICATES --------------
-    public static Map<String, List<String>> deadcertificate(String nome, String ip, Map<String, List<String>> x){//, String id, long ttl){
+    public static Map<String, List<String>> deadcertificate(String nome, String id, Map<String, List<String>> x){//, String id, long ttl){
         System.out.println("Em análise...");
         System.out.println("------PIT------");
         // Só faz print da tabela
@@ -227,7 +227,7 @@ public class movel {
             {
                 List<String> arrayx = entry.getValue();
                 // Caso só exista 1 ip no interesse elimina interesse, caso contrário o interesse continua na tabela mas sem ips
-                if (arrayx.size()==1 && arrayx.contains(ip)){
+                if (arrayx.size()==1 && arrayx.contains(id)){
                     System.out.println("Como só possui 1 endereço IP apaga interesse");
                     // Remove interesse da PIT
                     x.remove(nome);
@@ -235,10 +235,10 @@ public class movel {
                     return x;
                 }else
                 // Verifica existência do ip na lista de ips
-                if (arrayx.contains(ip)) {
+                if (arrayx.contains(id)) {
                     // Remove ip
-                    arrayx.remove(ip);
-                    System.out.println("Array x contém IP " + ip + " e foi removido");
+                    arrayx.remove(id);
+                    System.out.println("Array x contém IP " + id + " e foi removido");
                 } else {
                     System.out.println("Do nothing");
                 }
@@ -252,22 +252,40 @@ public class movel {
         System.out.println("Envia CS  e PIT");
     }
     // Compare CS
-    public static LinkedHashMap<String, String> compareCS(LinkedHashMap<String,String> x, Map<String,String> y){//, Map<String, List<String>> y){
+    public static LinkedHashMap<String, String> compareCS(LinkedHashMap<String,String> csx, Map<String,String> csy, Map<String,List<String>> pitx){//, Map<String, List<String>> y){
         System.out.println("Estou a analizar a CS");
         // Comparar cs
         System.out.println("Comparar CS");
-        for (Map.Entry<String, String> entry : y.entrySet())
+        for (Map.Entry<String, String> entry : csy.entrySet())
         {
             // Se existir nome na CS do nó verifica TTL, futuramente...
-            if(x.containsKey(entry.getKey())){
+            if(csx.containsKey(entry.getKey())){
                 System.out.println("Nome existe, verificar TTL");
             }else{
                 // Caso o nome não exista na CS do nó adiciona
-                x.put(entry.getKey(),entry.getValue());
+                csx.put(entry.getKey(),entry.getValue());
                 System.out.println("A chave " + entry.getKey() + " e os dados " + entry.getValue() + " foram adicionados");
+                //
+                // Verifica se nome existe na PIT
+                if (pitx.containsKey(entry.getKey())){
+                    for (Map.Entry<String, List<String>> entrypit : pitx.entrySet())
+                    {
+                        // Verifica existência do id origem na lista de ips
+                        if (entry.getValue().contains(id)) {
+                            // Existindo envia em multicast o pacote dead certificate
+                            deadcertificatesend(entry.getKey(),id);
+                            System.out.println("O dead certificate foi enviado com o nome " + entry.getKey() + " o IP " + id);
+                        } else {
+                            System.out.println("Do nothing");
+                        }
+                    }
+                    // Limpa interesse da PIT por ter sido resolvido com a CS
+                    System.out.println("Interesse exsite na PIT, será removido.");
+                    pitx.remove(entry.getKey());
+                }
             }
         }
-        return x;
+        return csx;
     }
     // Compare PIT
     public static Map<String, List<String>> comparePIT(Map<String,List<String>> x, Map<String,List<String>> y){//, Map<String, List<String>> y){
@@ -296,5 +314,9 @@ public class movel {
             }
         }
         return x;
+    }
+    public static void deadcertificatesend(String nome, String id){
+        // Enviar dead certificate por ter chegado a resposta a um pedido original
+        System.out.println("Envio de dead certificate...");
     }
 }
