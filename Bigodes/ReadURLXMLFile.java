@@ -87,13 +87,22 @@ public class ReadURLXMLFile {
         String DNurlPais = variables.getPais();
         String DNurlMundo = variables.getMundo();
         String DNurlDesporto = variables.getDesporto();
+        String jornal = "dn";
+        String JNurlMundo = "http://feeds.jn.pt/JN-Mundo";
+        String JNurlPais = "http://feeds.jn.pt/JN-Pais";
+        String JNurlDesporto = "http://feeds.jn.pt/JN-Desporto";
 
-        criaxml("dnpais", DNurlPais);
-        criaxml("dndesporto", DNurlDesporto);
-        criaxml("dnmundo", DNurlMundo);
+        criaxml(jornal, "dnpais", DNurlPais);
+        criaxml(jornal, "dndesporto", DNurlDesporto);
+        criaxml(jornal, "dnmundo", DNurlMundo);
+        criaxml("jn","jnmundo",JNurlMundo);
+        criaxml("jn","jnpais",JNurlPais);
+        criaxml("jn","jndesporto",JNurlDesporto);
     }
 
-    public static void criaxml(String tema, String url) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+    public static void criaxml(String jornal, String tema, String url) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+
+        new File("C:/Users/Asus/Desktop/" + jornal + "/").mkdirs();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document data = db.parse(new URL(url).openStream());
@@ -116,18 +125,19 @@ public class ReadURLXMLFile {
                 // Se houver conteúdo faz print
                 Element eElement = (Element) nNode;
                 // Vai buscar cada separador "title"
-                System.out.println("Noticia : " + eElement.getElementsByTagName("title").item(0).getTextContent());
-                // Cria data.xml
-                Element staff = doc.createElement(tema);
-                rootElement.appendChild(staff);
+                // Print de teste
+                //System.out.println("Noticia : " + eElement.getElementsByTagName("title").item(0).getTextContent());
+                // Cria tema.xml
+                Element xmltema = doc.createElement(tema);
+                rootElement.appendChild(xmltema);
                 // set id da noticia
-                staff.setAttribute("id", String.valueOf(temp));
-                staff.appendChild(doc.createTextNode(eElement.getElementsByTagName("title").item(0).getTextContent()));
+                xmltema.setAttribute("id", String.valueOf(temp));
+                xmltema.appendChild(doc.createTextNode(eElement.getElementsByTagName("title").item(0).getTextContent()));
                 // write the content into xml file
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();
                 DOMSource source = new DOMSource(doc);
-                StreamResult result = new StreamResult(new File("C:/Users/Asus/Desktop/"+ tema +".xml"));
+                StreamResult result = new StreamResult(new File("C:/Users/Asus/Desktop/" + jornal + "/" + tema +".xml"));
                 // Output to console for testing
                 // StreamResult result = new StreamResult(System.out);
                 transformer.transform(source, result);
