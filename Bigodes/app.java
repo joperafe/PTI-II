@@ -25,7 +25,6 @@ import java.util.Map;
 
 public class Main extends Application {
 
-
     @Override
     public void start(Stage primaryStage) throws Exception{
 
@@ -79,14 +78,10 @@ public class Main extends Application {
                     ta.setText(text);
                 }else {
                     actiontarget.setFill(Color.FIREBRICK);
-                    actiontarget.setText("Pedido em processamento...");
+                    actiontarget.setText("Pedido a ser processado...");
                 }
             }
         });
-
-
-
-
     }
 
     public static void main(String[] args) {
