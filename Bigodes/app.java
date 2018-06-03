@@ -25,6 +25,7 @@ import java.util.Map;
 
 public class Main extends Application {
 
+
     @Override
     public void start(Stage primaryStage) throws Exception{
 
@@ -76,9 +77,10 @@ public class Main extends Application {
                         text = entry_cs.getValue() +/* "    Field "+i+*/"\n";
                     }
                     ta.setText(text);
+                    actiontarget.setText(null);
                 }else {
                     actiontarget.setFill(Color.FIREBRICK);
-                    actiontarget.setText("Pedido a ser processado...");
+                    actiontarget.setText("Pedido "+ interesseUser +" a ser processado...");
                 }
             }
         });
