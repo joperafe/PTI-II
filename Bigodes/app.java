@@ -1,8 +1,6 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -68,19 +66,22 @@ public class Main extends Application {
             public void handle(ActionEvent e) {
                 String interesseUser = interesseuser.getText();
                 System.out.println(interesseUser);
-                // Se não existir na CS lança aviso
+                // Se existir na CS imprime conteúdo
                 if(cs.containsKey(interesseUser)){
                     String text = "";
                     // Introduzir conteúdo da cs
+                    // OU do data.xml...?
                     for (Map.Entry<String, String> entry_cs : cs.entrySet()) {
                         //System.out.println("Tema: " + entry_cs.getKey() + "\t\tIPs: " + entry_cs.getValue());
                         text = entry_cs.getValue() +/* "    Field "+i+*/"\n";
                     }
+                    // Limpa aviso caso exista o conteúdo
                     ta.setText(text);
                     actiontarget.setText(null);
-                }else {
+                }else { // Se não existir na CS lança aviso
                     actiontarget.setFill(Color.FIREBRICK);
                     actiontarget.setText("Pedido "+ interesseUser +" a ser processado...");
+                    // Tem de haver uma verificação para quando o interesse for satisfeito
                 }
             }
         });
